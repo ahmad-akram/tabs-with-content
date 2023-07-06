@@ -1,0 +1,357 @@
+<div class="ct-main" {%  if section.settings.section-id != blank %} id="{{ section.settings.section-id }}"{% endif %}>
+    <div class="ct-heading">
+        {% if section.settings.heading != blank %}
+            <h1>{{ section.settings.heading }}</h1>
+        {% endif %}
+        {% if section.settings.sub-heading != blank %}
+          {{ section.settings.sub-heading }}
+        {% endif %}
+    </div>
+  <div class="ct-wrapper page-width">
+    <!-- Tab links -->
+    <div class="tab">
+      {% for block in section.blocks %}
+        {% if block.settings.tab-text != blank %}
+        <button {% if forloop.first %} id="defaultOpen"{% endif %} class="tablinks" onclick="openTab(event, '{{ block.settings.tab-text |replace: ' ', '_' }}')">
+          {% if block.settings.tab-image != blank %}
+            <div class="tab-image" style="width:{{ block.settings.tab-image-width }}%"><img src="{{ block.settings.tab-image |image_url }}"></div>
+          {% endif %}
+          <div class="tab-button-text button button--primary">
+            {{ block.settings.tab-text }}
+          </div>
+        </button>
+        {% endif %}
+      {% endfor %}
+    </div>
+    
+    <div class="tab-content-container">
+    <!-- Tab content -->
+      {% for block in section.blocks %}
+        {% if block.settings.tab-text != blank %}
+          <div id="{{ block.settings.tab-text |replace: ' ', '_' }}" class="tabcontent">
+            <div class="tab-content-wrapper">
+              {% if block.settings.tab-content-image != blank %}
+                <div class="tab-content-image">
+                  <img src="{{ block.settings.tab-content-image |image_url }}">
+                </div>
+              {% endif %}
+              <div class="tab-content-right">
+              {% if block.settings.tab-content-text != blank %}
+                <div class="tab-content-text">
+                  {{ block.settings.tab-content-text }}
+                </div>
+              {% endif %}
+              {% if block.settings.button-text != blank %}
+                <a href="{% if block.settings.button-url != blank %}{{ block.settings.button-url }}{% else %}#{% endif %}">{{ block.settings.button-text }} <span></span></a>
+              {% endif %}
+              </div>
+            </div> 
+            
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<style>
+.ct-heading{
+  background:{% if section.settings.heading-background != blank  %} {{section.settings.heading-background}} {% else %} var(--gradient-background){% endif %};
+  text-align:center;
+  height: {{ section.settings.heading-height }}px;
+  margin-top: -{{section.settings.heading-vertical-offset}}px;
+  padding-top:{{section.settings.heading-padding-top}}px;
+  padding-bottom:{{section.settings.heading-padding-bottom}}px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.ct-heading p{
+  max-width:70%;
+  margin: 0 auto;
+}
+.ct-heading *{
+  margin:0;
+}
+.ct-main{
+  background:{% if section.settings.content-background != blank %} {{section.settings.content-background}} {% else %}white{% endif %};
+}
+.ct-wrapper{
+  padding-top:40px;
+}
+.tab {
+  overflow: hidden;
+  background-color:white;
+  display:flex;
+  gap:10px;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 0;
+  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+  padding-bottom:0;
+}
+
+.tab-button-text{
+  width:100%;
+  font-size:12px;
+  padding:0;
+}
+/* Create an active/current tablink class */
+.tab button.active .tab-button-text:hover{
+  background:rgba(var(--color-button),var(--alpha-button-background));
+  color:rgb(var(--color-button-text));
+}
+.tab button:not(.active) .tab-button-text{
+  background: #A4B8CB !important;
+  color: #0c2148 !important;
+}
+.tab button:not(.active) .tab-button-text:after{
+  box-shadow:none;
+}
+.tab-image{
+  flex-grow: 1;
+  display: flex;
+}
+.tab-image img{
+  width:100%;
+}
+/* Style the tab content */
+.tabcontent {
+  display: none;
+}
+.tab-content-wrapper{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 54px 125px 58px 62px;
+  z-index: 1;
+  position: relative;
+}
+.tab-content-image{
+  max-width:394px;
+  height:auto;
+  max-height: 275px;
+}
+.tab-content-image img{
+  width:100%;
+  
+}
+.tab-content-right{
+  width: 639px;
+  margin-left:30px;
+}
+  
+.tab-content-wrapper a span{
+  display: inline-block;
+  width: 28.5px;
+  height: 8.5px;
+  background: url('https://cdn.shopify.com/s/files/1/0791/9966/6486/files/graphic-arrow-link.png?v=1688504328') no-repeat top left;
+  background-size: contain;
+  margin-left: 5px;
+}
+.tab-content-wrapper a{
+  color:unset;
+  text-decoration:none;
+  font-size:15px;
+}
+.tab-content-text{
+  font-size: 24px;
+  line-height: 1.5;
+}
+@media(max-width:1300px){
+  .tab-content-wrapper{
+    flex-direction:column;
+    padding: 50px 5%;
+  }
+  .tab-content-right{
+    width:100%;
+  }
+  .tab{
+    gap:0;
+  }
+}
+@media(max-width:800px){
+  .ct-heading{
+    padding-top:60px;
+    padding-bottom:60px;
+    margin-top:0;
+    height:auto;
+  }
+  .tab-image{
+    display:none;
+  }
+  .tab{
+    flex-direction:column;
+  }
+  .tab button{
+    padding: 1px 0;
+  }
+}
+</style>
+<script>
+function openTab(evt, tabName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+document.getElementById("defaultOpen").click();
+</script>
+{% schema %}
+  {
+    "name": "Content Tabs",
+    "settings": [
+      {
+        "type":"text",
+        "id":"heading",
+        "label":"Heading"
+      },
+      {
+        "type":"richtext",
+        "id":"sub-heading",
+        "label":"Sub Heading"
+      },
+      {
+        "type":"text",
+        "id":"section-id",
+        "label":"Section ID"
+      },
+      {
+        "type":"range",
+        "id":"heading-height",
+        "label":"Heading Height",
+        "min":0,
+        "max":400,
+        "step":4,
+        "unit":"px",
+        "default":200
+      },
+      {
+        "type":"range",
+        "id":"heading-vertical-offset",
+        "label":"Heading vertical offset",
+        "min":0,
+        "max":200,
+        "step":2,
+        "unit":"px",
+        "default":0
+      },
+      {
+        "type":"range",
+        "id":"heading-padding-top",
+        "label":"Heading Top Padding",
+        "min":0,
+        "max":200,
+        "step":2,
+        "unit":"px",
+        "default":0
+      },
+      {
+        "type":"range",
+        "id":"heading-padding-bottom",
+        "label":"Heading Bottom Padding",
+        "min":0,
+        "max":200,
+        "step":2,
+        "unit":"px",
+        "default":0
+      },
+      {
+        "type":"color",
+        "id":"heading-background",
+        "label":"Heading Background Color"
+      },
+      {
+        "type":"color",
+        "id":"content-background",
+        "label":"Content Background Color"
+      }
+    ],
+    "blocks":[
+      {
+        "type":"tab",
+        "name":"Tab",
+        "settings":[
+          {
+            "type":"image_picker",
+            "id":"tab-image",
+            "label":"Tab Image"
+          },
+          {
+            "type":"range",
+            "id":"tab-image-width",
+            "label":"Tab Image Width",
+            "default":40,
+            "min":0,
+            "max":100,
+            "unit":"%"
+          },
+          {
+            "type":"text",
+            "id":"tab-text",
+            "label":"Tab Text"
+          },
+          {
+            "type":"image_picker",
+            "id":"tab-content-image",
+            "label":"Tab Content Image"
+          },
+          {
+            "type":"richtext",
+            "id":"tab-content-text",
+            "label":"Tab Content Text"
+          },
+          {
+            "type":"text",
+            "id":"button-text",
+            "label":"button-text"
+          },
+          {
+            "type":"url",
+            "id":"button-url",
+            "label":"button-url"
+          }
+        ]
+      }
+    ],
+    "presets":[
+      {
+        "name":"Tabs-Content (Our Story)"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
